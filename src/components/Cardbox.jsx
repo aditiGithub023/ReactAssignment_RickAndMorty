@@ -3,7 +3,7 @@ import React from "react";
 //mui
 import Card from "@mui/material/Card";
 // import CardActions from '@mui/material/CardActions';
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
@@ -32,10 +32,6 @@ function Cardbox({
   const [search, setSearch] = useState("");
   const currentDate = new Date();
 
-
- 
-
-
   const ListPoint = styled(ListItem)(({ theme }) => ({
     padding: theme.spacing(1),
     display: "flex",
@@ -49,6 +45,7 @@ function Cardbox({
   const HeadingValue = styled(Typography)(() => ({
     color: "#FF8C00",
     textAlign: "end",
+    fontSize: { xs: "8px" },
   }));
 
   function diff_years(current_year, dateValue) {
@@ -67,6 +64,7 @@ function Cardbox({
       return search.toLowerCase().trim() === ""
         ? item
         : searchName.toLowerCase().includes(search);
+
     });
     setDataShown(newData);
   }
@@ -86,7 +84,7 @@ function Cardbox({
           sx={{
             height: "50px",
             width: "100%",
-            //  bgcolor:"green"
+          
           }}
         >
           <Tags selectedFilters={selectedFilters} handleState={handleState} />
@@ -99,7 +97,7 @@ function Cardbox({
               display: "flex",
               flexDirection: { md: "row", xs: "column" },
               marginRight: "1rem",
-              //  ,backgroundColor:"red",
+             
               marginBottom: "40px",
               width: "100%",
             }}
@@ -132,7 +130,7 @@ function Cardbox({
                   marginLeft: "2px",
                   "&:hover": {
                     backgroundColor: "#606060",
-                    // color: '#3c52b2',
+                   
                   },
                 }}
               >
@@ -143,25 +141,55 @@ function Cardbox({
             <Box
               sx={{
                 width: "100%",
-                // backgroundColor:"green"
+              
               }}
             >
-              {/* asc-des */}
+            
               <SortData setDataShown={setDataShown} showData={showData} />
             </Box>
           </Box>
         </Grid>
       </Grid>
-  {/* const cardPerPage=8; */}
 
-      {isLoading &&   
-      <CircularProgress />
-    }
-      <Box sx={{ background: "black", minHeight: "100vh" }}>
+      {isLoading && (
+        <Box
+          sx={{
+            minHeight: "100vh",
+            fontFamily: `${font}`,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      <Box
+        sx={{
+          background: "black",
+          minHeight: "100vh",
+          borderRadius: { md: "1rem", xs: "0px" },
+        }}
+      >
         <Grid container spacing={{ lg: 1, md: 0.4, xs: 0.5 }} p={2}>
           {showData.length === 0 && (
-            <Box sx={{minHeight:"100vh",fontFamily:`${font}`,width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}>
-            <Typography variant="h3" sx={{ color: "white",textAlign:"center"}}>No Match found</Typography>
+            <Box
+              sx={{
+                minHeight: "100vh",
+                fontFamily: `${font}`,
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="h3"
+                sx={{ color: "white", textAlign: "center" }}
+              >
+                No Match found
+              </Typography>
             </Box>
           )}
           {showData.length > 0 &&
@@ -174,7 +202,7 @@ function Cardbox({
                   // md={3}
                   md={4}
                   lg={3}
-                  bgcolor="black"
+
                 >
                   <Card
                     sx={{
@@ -200,16 +228,21 @@ function Cardbox({
                           color: "black",
                           bottom: 0,
                           height: "fit-content",
-                          backgroundColor: "rgba(0, 0, 0, .6)",
+                          backgroundColor: "rgba(0, 0, 0, .6)", 
                           width: "100%",
                         }}
                       >
                         <Box sx={{ marginLeft: "10px" }}>
                           <Typography
                             gutterBottom
-                            // variant="body1"
                             component="div"
-                            sx={{ color: "white", textAlign: "left",marginTop:"0.5rem",fontFamily:`${font}` ,fontSize:"1rem"}}
+                            sx={{
+                              color: "white",
+                              textAlign: "left",
+                              marginTop: "0.5rem",
+                              fontFamily: `${font}`,
+                              fontSize: "1rem",
+                            }}
                           >
                             {element.name}
                           </Typography>
