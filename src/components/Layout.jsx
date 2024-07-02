@@ -1,14 +1,12 @@
 import React from "react";
 import Box from "@mui/material/Box";
-// import Paper from '@mui/material/Paper';
 import Grid from "@mui/material/Grid";
-// import { styled } from '@mui/material/styles';
 import Cardbox from "./Cardbox";
 import axios from "axios";
 import {
   useState,
   useEffect,
-  // useCallback
+
 } from "react";
 import FilterData from "./FilterData";
 
@@ -17,6 +15,7 @@ function Layout() {
   const [data, setData] = useState([]);
   const [showData, setDataShown] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
 
   const [collectedKey, setCollectedKeys] = useState({});
   
@@ -43,10 +42,8 @@ function Layout() {
       Dead: false,
     },
   });
-  const handleChange = (identifier,value, namevalue) => {
-    // console.log("identifier", identifier);
-    // console.log("name-value", namevalue);
-    // console.log("value", value);
+  const handleChange = (identifier, namevalue) => {
+   
 
     setState((prevState) => ({
       ...prevState,
@@ -55,8 +52,7 @@ function Layout() {
         [namevalue]: !prevState[identifier][namevalue],
       },
     }));
-    // console.log("state",state);
-    // collectSelectedKeys();
+ 
   };
   useEffect(() => {
     //start loading
@@ -64,7 +60,7 @@ function Layout() {
     axios
       .get("https://rickandmortyapi.com/api/character/")
       .then((response) => {
-        // console.log("response", response.data.results);
+      
         setData(response.data.results);
         setDataShown(response.data.results);
         //loading complete
@@ -76,6 +72,7 @@ function Layout() {
       });
   }, []);
   useEffect(() => {
+ 
     function collectSelectedKeys() {
       let collectedTrueKeys = {
         originTrue: [],
@@ -85,32 +82,30 @@ function Layout() {
       };
       const { origin, species, gender, status } = state;
       for (let key in origin) {
+    
         if (origin[key]) {
           if (!collectedTrueKeys.originTrue.includes(key))
             collectedTrueKeys.originTrue.push(key);
         }
       }
       for (let key in species) {
-        if (species[key]) collectedTrueKeys.speciesTrue.push(key);
+        if (species[key])
+           collectedTrueKeys.speciesTrue.push(key);
       }
       for (let key in gender) {
-        if (gender[key]) collectedTrueKeys.genderTrue.push(key);
+        if (gender[key])
+           collectedTrueKeys.genderTrue.push(key);
       }
       for (let key in status) {
-        if (status[key]) collectedTrueKeys.statusTrue.push(key);
+        if (status[key]) 
+          collectedTrueKeys.statusTrue.push(key);
       }
-      // console.log(
-      //   "collected keys",
-      //   collectedTrueKeys.genderTrue,
-      //   collectedTrueKeys.speciesTrue,
-      //   collectedTrueKeys.originTrue,
-      //   collectedTrueKeys.statusTrue
-      // );
-      // console.log(state);
+    
 
       let { genderTrue, originTrue, speciesTrue, statusTrue } =
         collectedTrueKeys;
       let fileredData = [...data];
+
       if (genderTrue.length > 0) {
         fileredData = fileredData.filter((el) =>
           genderTrue.includes(el.gender)
@@ -132,9 +127,10 @@ function Layout() {
         );
       }
       setDataShown(fileredData);
+
+
       setCollectedKeys(collectedTrueKeys);
-      // return collectedTrueKeys;
-      // console.log(collectedTrueKeys);
+      
     }
     collectSelectedKeys();
   }, [state, data]);
@@ -147,9 +143,9 @@ function Layout() {
           item
           xs={12}
           md={2}
-          // sx={{ backgroundColor: "pink", height: "100vh" }}
-          // sx={{backgroundImage:`url(${flower})`}}
+      
         >
+
           <FilterData state={state} handleChange={handleChange} />
         </Grid>
         <Grid item xs={12} md={10} sx={{ height: "100vh" }}>
