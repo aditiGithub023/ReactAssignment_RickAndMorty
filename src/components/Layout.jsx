@@ -15,11 +15,7 @@ function Layout() {
   const [data, setData] = useState([]);
   const [showData, setDataShown] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-
   const [collectedKey, setCollectedKeys] = useState({});
-  
-  //for tracking checkBoxes
   const [state, setState] = useState({
     origin: {
       "Earth (C-137)": false,
@@ -43,7 +39,7 @@ function Layout() {
     },
   });
   const handleChange = (identifier, namevalue) => {
-   
+
 
     setState((prevState) => ({
       ...prevState,
@@ -52,18 +48,18 @@ function Layout() {
         [namevalue]: !prevState[identifier][namevalue],
       },
     }));
- 
+
   };
   useEffect(() => {
-    //start loading
+ 
     setIsLoading(true);
     axios
       .get("https://rickandmortyapi.com/api/character/")
       .then((response) => {
-      
+
         setData(response.data.results);
         setDataShown(response.data.results);
-        //loading complete
+     
         setIsLoading(false);
       })
       .catch((e) => {
@@ -72,69 +68,36 @@ function Layout() {
       });
   }, []);
   useEffect(() => {
- 
+
+   
     function collectSelectedKeys() {
-      let collectedTrueKeys = {
-        originTrue: [],
-        speciesTrue: [],
-        genderTrue: [],
-        statusTrue: [],
+      const selected = {
+        origin: [],
+        species: [],
+        gender: [],
+        status: [],
       };
-      const { origin, species, gender, status } = state;
-      for (let key in origin) {
-    
-        if (origin[key]) {
-          if (!collectedTrueKeys.originTrue.includes(key))
-            collectedTrueKeys.originTrue.push(key);
+
+      for (const key in state) {
+        for (const tag in state[key]) {
+          if (state[key][tag]) {
+            selected[key].push(tag);
+          }
         }
       }
-      for (let key in species) {
-        if (species[key])
-           collectedTrueKeys.speciesTrue.push(key);
-      }
-      for (let key in gender) {
-        if (gender[key])
-           collectedTrueKeys.genderTrue.push(key);
-      }
-      for (let key in status) {
-        if (status[key]) 
-          collectedTrueKeys.statusTrue.push(key);
-      }
-    
 
-      let { genderTrue, originTrue, speciesTrue, statusTrue } =
-        collectedTrueKeys;
-      let fileredData = [...data];
+      const filteredData = data.filter((el) =>
+        (selected.gender.length === 0 || selected.gender.includes(el.gender)) &&
+        (selected.origin.length === 0 || selected.origin.includes(el.origin.name)) &&
+        (selected.species.length === 0 || selected.species.includes(el.species)) &&
+        (selected.status.length === 0 || selected.status.includes(el.status))
+      );
 
-      if (genderTrue.length > 0) {
-        fileredData = fileredData.filter((el) =>
-          genderTrue.includes(el.gender)
-        );
-      }
-      if (originTrue.length > 0) {
-        fileredData = fileredData.filter((el) =>
-          originTrue.includes(el.origin.name)
-        );
-      }
-      if (speciesTrue.length > 0) {
-        fileredData = fileredData.filter((el) =>
-          speciesTrue.includes(el.species)
-        );
-      }
-      if (statusTrue.length > 0) {
-        fileredData = fileredData.filter((el) =>
-          statusTrue.includes(el.status)
-        );
-      }
-      setDataShown(fileredData);
-
-
-      setCollectedKeys(collectedTrueKeys);
-      
+      setDataShown(filteredData);
+      setCollectedKeys(selected);
     }
     collectSelectedKeys();
   }, [state, data]);
-
 
   return (
     <Box>
@@ -143,13 +106,13 @@ function Layout() {
           item
           xs={12}
           md={2}
-      
+
         >
 
           <FilterData state={state} handleChange={handleChange} />
         </Grid>
         <Grid item xs={12} md={10} sx={{ height: "100vh" }}>
-          {/* card */}
+    
           <Cardbox
             data={data}
             isLoading={isLoading}
